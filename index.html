@@ -301,7 +301,8 @@ body{margin:0;background:#FAF6EE;-webkit-font-smoothing:antialiased;}
   // Mät body, inte documentElement: documentElement.scrollHeight är aldrig mindre än iframens
   // egen höjd, så iframen hade kunnat växa men aldrig krympa. body har margin 0 och rymmer bara sidan.
   function post() {
-    if (!embedded) return;
+    // Ingen bredd betyder att iframen inte fått sin layout än; höjden vore då meningslös (och enorm).
+    if (!embedded || !document.body.offsetWidth) return;
     parent.postMessage({ source: 'majposten-partner', height: document.body.offsetHeight }, '*');
   }
   if ('ResizeObserver' in window) { new ResizeObserver(post).observe(document.body); }
