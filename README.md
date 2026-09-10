@@ -1,5 +1,28 @@
 # Handoff: Partner-sidan (majposten.se/partner)
 
+## Läge 2026-09-10
+
+- **Hostad på** `https://wildg14.github.io/majposten-partner/` (publikt repo `wildg14/majposten-partner`,
+  GitHub Pages från `main`, mappen `/`, inget byggsteg).
+- **Inbäddad på** majposten.se/partner med `beehiiv-embed.html`: en iframe mot Pages-adressen plus en
+  lyssnare som sätter iframens höjd. Beslut och mätningar i
+  `docs/superpowers/specs/2026-09-10-partner-inbaddning-design.md`.
+- **Ändrat mot leveransen**, inget som påverkar utseendet: logotypen ligger lokalt i `bilder/kvarteret-logo.png`,
+  de två mejlknapparna har `target="_top"`, höjdskriptet mäter `body.offsetHeight` (se nedan) och snippeten
+  knuffar Beehiivs egen höjdmätning efter varje ändring.
+- **Verifierat**: sidan på Pages-adressen renderar identiskt med `design/annonsera-desktop.png` och
+  `design/annonsera-mobil.png` så när som på delpixel-drift i textrader, ett fåtal radbrytningar som
+  referensrenderaren gjorde annorlunda (den bröt bland annat rubriker så att de överlappade texten under,
+  vilket ingen webbläsare gör med den här HTML:en) och omskalade jpg-bilder. Höjdsynken verifierad i en
+  simulering av Beehiivs srcdoc-block vid 1100 och 390 px.
+- **Kontroller**: `python3 tests/kontroll.py` (textnivå, stdlib). `node verktyg/skarmdump.js <url> ut` tar
+  helsidesskärmdumpar och `verktyg/jamfor.py` jämför dem mot `design/` (kräver Pillow).
+  `node verktyg/beehiiv-check.js http://127.0.0.1:8766/docs/beehiivtest.html` kontrollerar höjdsynken i
+  simuleringen. Lokal server: `python3 -m http.server 8766 --bind 127.0.0.1`. `npm install` i `verktyg/` först.
+- **Uppdatering**: commit, push, vänta tills `gh api repos/wildg14/majposten-partner/pages/builds/latest`
+  säger `built`. Webbläsare kan hålla kvar gammal version i upp till tio minuter (`cache-control: max-age=600`);
+  bumpa `?v=` i iframens `src` på Beehiiv om ändringen ska synas direkt.
+
 ## Vad det här är
 
 En **färdig statisk sida**, inte en prototyp. `index.html` är produktionsfilen: ren HTML med inline-CSS, systemtypsnitt (Georgia, Arial), inga skript utöver höjdsynken, inga externa resurser utöver en logotyp som ska hämtas hem (se uppgift 2). Den ska hostas som den är på GitHub Pages och bäddas in på Beehiiv-sidan "Partner", samma grepp som redan används för majposten.se/val2026.
@@ -24,7 +47,7 @@ En **färdig statisk sida**, inte en prototyp. `index.html` är produktionsfilen
 
 ## Så funkar höjdsynken
 
-Sidan i iframen kan inte påverka iframens höjd själv. Skriptet i `index.html` skickar därför `{ source: 'majposten-partner', height }` med `postMessage` till föräldrasidan vid load, resize och varje gång dokumentets höjd ändras (ResizeObserver). Lyssnaren i `beehiiv-embed.html` sätter iframens höjd till det värdet. När sidan ligger i en iframe stänger den av sin egen scroll, så att det aldrig blir dubbla rullister. Öppnas `index.html` direkt (inte inbäddad) beter den sig som en vanlig sida.
+Sidan i iframen kan inte påverka iframens höjd själv. Skriptet i `index.html` skickar därför `{ source: 'majposten-partner', height }` med `postMessage` till föräldrasidan vid load, resize och varje gång `body` ändrar höjd (ResizeObserver). Höjden är `body.offsetHeight`, inte `documentElement.scrollHeight`: den senare är aldrig mindre än iframens egen höjd, så iframen hade kunnat växa men aldrig krympa. Lyssnaren i `beehiiv-embed.html` sätter iframens höjd till det värdet och knuffar sedan Beehiivs egen mätning (Beehiiv mäter sitt srcdoc-block vid DOMContentLoaded, resize och childList-mutationer, inte vid attributändringar) genom att lägga till och ta bort en tom textnod och skicka ett resize-event. När sidan ligger i en iframe stänger den av sin egen scroll, så att det aldrig blir dubbla rullister. Öppnas `index.html` direkt (inte inbäddad) beter den sig som en vanlig sida.
 
 Origin är `'*'` eftersom meddelandet bara innehåller ett heltal. Lyssnaren filtrerar på `source`.
 

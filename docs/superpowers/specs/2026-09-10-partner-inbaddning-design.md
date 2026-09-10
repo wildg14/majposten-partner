@@ -44,6 +44,24 @@ Bara sådant som inte påverkar utseendet:
 Med sektionens padding satt till 0 på både desktop och mobil blir blocket 390 px på mobil.
 Sidans `vw`-mått i `clamp()` når sitt tak vid cirka 890 px, så 1060 px renderar som 1100.
 
+## Höjdsynken, uppmätt och justerad 2026-09-10
+
+Beehiivs srcdoc-dokument (uppmätt på majposten.se/val2026) laddar Tailwind-preflight (marginal och
+padding 0 på allt, så vår iframe får blockets hela bredd) och skickar `body.scrollHeight` till
+föräldern vid `DOMContentLoaded`, `resize`, `input`, `change` och childList-mutationer. Ingen
+ResizeObserver, inga attributmutationer. Två följder som rättats:
+
+1. `index.html` mäter `body.offsetHeight`. Det levererade `documentElement.scrollHeight` är aldrig
+   mindre än iframens egen höjd, så iframen kunde växa men aldrig krympa (desktop hade fastnat på
+   start-höjden 8200 med 8120 px innehåll).
+2. Snippeten knuffar Beehiivs mätning efter varje höjdändring: en tom textnod läggs till och tas
+   bort (childList-mutation) och ett `resize`-event skickas. Utan det hade blocket stannat på den
+   höjd Beehiiv mätte vid `DOMContentLoaded` och klippt sidan på mobil.
+
+`docs/beehiivtest.html` speglar mekanismen exakt och `verktyg/beehiiv-check.js` verifierar att
+blocket följer sidan (8120 px vid 1100, 9901 px vid 390). `tests/kontroll.py` vaktar att
+simuleringen kör samma snippet som `beehiiv-embed.html`.
+
 ## Manuella steg på Beehiiv (Daniel)
 
 1. Öppna sidan Partner i sidbyggaren, lägg ett HTML-block, klistra in `beehiiv-embed.html`.
