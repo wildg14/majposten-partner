@@ -79,7 +79,7 @@ när sidan är verifierad live.
 - Webbläsarnivå: Chrome headless-skärmdumpar vid 1100 och 390 px av den lokala sidan och av
   Pages-adressen, jämförda pixelvis mot `design/*.png`.
 - Live: efter Daniels inklistring, kontroll på majposten.se/partner vid 1100 och 390 px,
-  att höjden följer med och att knapparna öppnar `mailto:daniel@majposten.se?subject=Partner%20i%20Majposten`.
+  att höjden följer med och att knapparna öppnar `mailto:daniel@tvartom.win?subject=Partner%20i%20Majposten`.
 
 ## Uppdateringar framöver
 

@@ -68,7 +68,7 @@ from pathlib import Path
 ROT = Path(__file__).resolve().parents[1]
 INDEX = (ROT / "index.html").read_text(encoding="utf-8")
 EMBED = (ROT / "beehiiv-embed.html").read_text(encoding="utf-8")
-MAILTO = "mailto:daniel@majposten.se?subject=Partner%20i%20Majposten"
+MAILTO = "mailto:daniel@tvartom.win?subject=Partner%20i%20Majposten"
 
 
 def kontroller():
@@ -151,7 +151,7 @@ Expected: `PNG image data`, rimliga mått (bred liggande logotyp).
 
 ```bash
 sed -i '' 's#https://www.kvarteretmakleri.se/logo-black.png#bilder/kvarteret-logo.png#g' index.html
-sed -i '' 's#<a href="mailto:daniel@majposten.se?subject=Partner%20i%20Majposten"#<a href="mailto:daniel@majposten.se?subject=Partner%20i%20Majposten" target="_top"#g' index.html
+sed -i '' 's#<a href="mailto:daniel@tvartom.win?subject=Partner%20i%20Majposten"#<a href="mailto:daniel@tvartom.win?subject=Partner%20i%20Majposten" target="_top"#g' index.html
 sed -i '' 's#https://ANVANDARE.github.io/majposten-partner/#https://wildg14.github.io/majposten-partner/#' beehiiv-embed.html
 grep -c 'bilder/kvarteret-logo.png' index.html   # 2
 grep -c 'target="_top"' index.html                # 2

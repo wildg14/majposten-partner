@@ -8,7 +8,7 @@ ROT = Path(__file__).resolve().parents[1]
 INDEX = (ROT / "index.html").read_text(encoding="utf-8")
 EMBED = (ROT / "beehiiv-embed.html").read_text(encoding="utf-8")
 TESTSIDA = (ROT / "docs" / "beehiivtest.html").read_text(encoding="utf-8")
-MAILTO = "mailto:daniel@majposten.se?subject=Partner%20i%20Majposten"
+MAILTO = "mailto:daniel@tvartom.win?subject=Partner%20i%20Majposten"
 
 
 def kontroller():
