@@ -1,4 +1,4 @@
-<!-- Klistras in i ett HTML-/embed-block på Beehiiv-sidan "Partner". Byt SRC till GitHub Pages-adressen. -->
+<!-- Klistras in i ett HTML-/embed-block på Beehiiv-sidan "Partner". Bumpa ?v= när sidan uppdaterats. -->
 <iframe id="majposten-partner"
         src="https://wildg14.github.io/majposten-partner/?v=1"
         title="Annonsera i Majposten"
@@ -8,6 +8,14 @@
 window.addEventListener('message', function (e) {
   if (!e.data || e.data.source !== 'majposten-partner') return;
   var f = document.getElementById('majposten-partner');
-  if (f) f.style.height = Math.ceil(e.data.height) + 'px';
+  if (!f) return;
+  f.style.height = Math.ceil(e.data.height) + 'px';
+  // Beehiiv mäter sitt block vid DOMContentLoaded, resize och childList-mutationer (uppmätt på
+  // majposten.se/val2026 2026-09-10), inte när ett attribut ändras. En tom textnod som läggs till
+  // och tas bort, plus ett resize-event, får blocket att mäta om så att det följer iframens höjd.
+  var n = document.createTextNode('');
+  document.body.appendChild(n);
+  document.body.removeChild(n);
+  window.dispatchEvent(new Event('resize'));
 });
 </script>

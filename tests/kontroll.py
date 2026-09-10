@@ -7,6 +7,7 @@ from pathlib import Path
 ROT = Path(__file__).resolve().parents[1]
 INDEX = (ROT / "index.html").read_text(encoding="utf-8")
 EMBED = (ROT / "beehiiv-embed.html").read_text(encoding="utf-8")
+TESTSIDA = (ROT / "docs" / "beehiivtest.html").read_text(encoding="utf-8")
 MAILTO = "mailto:daniel@majposten.se?subject=Partner%20i%20Majposten"
 
 
@@ -43,6 +44,10 @@ def kontroller():
         fel.append("source-strängen skiljer sig mellan index.html och beehiiv-embed.html")
     if "ANVANDARE" in EMBED:
         fel.append("beehiiv-embed.html har platshållaren ANVANDARE kvar")
+
+    # 6. Beehiiv-simuleringen testar exakt den snippet som klistras in (med </script> skrivet som <\/script>).
+    if EMBED.strip().replace("</script>", "<\\/script>") not in TESTSIDA:
+        fel.append("docs/beehiivtest.html har inte samma embed-snippet som beehiiv-embed.html")
 
     return fel
 

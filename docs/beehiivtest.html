@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beehiiv-simulering: Partner-blocket</title>
+<style>
+  body { margin: 0; font-family: Arial, sans-serif; background: #fff; }
+  nav { position: sticky; top: 0; height: 89px; background: #fff; border-bottom: 1px solid #ddd; display: flex; align-items: center; padding: 0 24px; box-sizing: border-box; z-index: 1; }
+  /* Sektionen som håller blocket: bakgrund #FAF6EE, ingen padding (README uppgift 5). */
+  section { background: #FAF6EE; padding: 0; }
+  iframe.srcdoc { display: block; width: 100%; border: 0; height: 0; }
+  footer { padding: 40px 24px; color: #666; border-top: 1px solid #ddd; }
+</style>
+</head>
+<body>
+<nav>Majposten (simulerad Beehiiv-meny, 89 px, klibbig)</nav>
+<section>
+  <iframe class="srcdoc" id="block" title="HTML-block"></iframe>
+</section>
+<footer>Simulerad Beehiiv-sidfot</footer>
+
+<!-- EMBED: exakt innehållet i beehiiv-embed.html (tests/kontroll.py vaktar det). ?src=<adress> byter iframens src. -->
+<script type="text/plain" id="embed">
+<!-- Klistras in i ett HTML-/embed-block på Beehiiv-sidan "Partner". Bumpa ?v= när sidan uppdaterats. -->
+<iframe id="majposten-partner"
+        src="https://wildg14.github.io/majposten-partner/?v=1"
+        title="Annonsera i Majposten"
+        style="display:block;width:100%;border:0;height:8200px;background:#FAF6EE;"
+        scrolling="no"></iframe>
+<script>
+window.addEventListener('message', function (e) {
+  if (!e.data || e.data.source !== 'majposten-partner') return;
+  var f = document.getElementById('majposten-partner');
+  if (!f) return;
+  f.style.height = Math.ceil(e.data.height) + 'px';
+  // Beehiiv mäter sitt block vid DOMContentLoaded, resize och childList-mutationer (uppmätt på
+  // majposten.se/val2026 2026-09-10), inte när ett attribut ändras. En tom textnod som läggs till
+  // och tas bort, plus ett resize-event, får blocket att mäta om så att det följer iframens höjd.
+  var n = document.createTextNode('');
+  document.body.appendChild(n);
+  document.body.removeChild(n);
+  window.dispatchEvent(new Event('resize'));
+});
+<\/script>
+</script>
+
+<!-- Beehiivs egen inramning av blocket, uppmätt på majposten.se/val2026 2026-09-10: Tailwind-preflight
+     (marginal och padding 0 på allt) och ett skript som skickar body.scrollHeight till föräldern vid
+     DOMContentLoaded, resize, input, change och childList-mutationer. Ingen ResizeObserver. -->
+<script type="text/plain" id="ram">
+<style>*, ::after, ::before { box-sizing: border-box; margin: 0; padding: 0; border: 0 solid; } html { line-height: 1.5; }</style>
+<script>
+function beehiiv_sendHeight(reason) { return function () { const height = document.body.scrollHeight; parent.postMessage({ type: "beehiiv:iframe_height", height, reason, embedId: "test" }, "*"); } }
+document.addEventListener("DOMContentLoaded", beehiiv_sendHeight("DOMContentLoaded"));
+window.addEventListener("resize", beehiiv_sendHeight("resize"));
+document.addEventListener("input", beehiiv_sendHeight("input"));
+document.addEventListener("change", beehiiv_sendHeight("change"));
+<\/script>
+</script>
+<script type="text/plain" id="ramslut">
+<script>
+const observer = new MutationObserver(beehiiv_sendHeight("MutationObserver"));
+try { observer.observe(document.body, { childList: true, subtree: true }); } catch (e) { console.error(e) }
+<\/script>
+</script>
+
+<script>
+  // '</' + 'script>' delas upp så att HTML-parsern inte avslutar det här skriptet i förtid.
+  var avesc = function (id) { return document.getElementById(id).textContent.split('<\\/script>').join('</' + 'script>'); };
+  var html = avesc('embed');
+  var src = new URLSearchParams(location.search).get('src');
+  if (src) html = html.replace(/src="[^"]+"/, 'src="' + src + '"');
+  var block = document.getElementById('block');
+  block.srcdoc = avesc('ram') + html + avesc('ramslut');
+  // Föräldern (Beehiiv) sätter blockets höjd från meddelandet. Logga varje mätning för felsökning.
+  window.beehiivLogg = [];
+  window.addEventListener('message', function (e) {
+    if (!e.data || e.data.type !== 'beehiiv:iframe_height') return;
+    window.beehiivLogg.push(e.data.reason + ':' + e.data.height);
+    block.style.height = e.data.height + 'px';
+  });
+</script>
+</body>
+</html>

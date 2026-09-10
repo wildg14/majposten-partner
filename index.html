@@ -298,11 +298,13 @@ body{margin:0;background:#FAF6EE;-webkit-font-smoothing:antialiased;}
 (function () {
   var embedded = window.self !== window.top;
   if (embedded) { document.documentElement.style.overflow = 'hidden'; }
+  // Mät body, inte documentElement: documentElement.scrollHeight är aldrig mindre än iframens
+  // egen höjd, så iframen hade kunnat växa men aldrig krympa. body har margin 0 och rymmer bara sidan.
   function post() {
     if (!embedded) return;
-    parent.postMessage({ source: 'majposten-partner', height: document.documentElement.scrollHeight }, '*');
+    parent.postMessage({ source: 'majposten-partner', height: document.body.offsetHeight }, '*');
   }
-  if ('ResizeObserver' in window) { new ResizeObserver(post).observe(document.documentElement); }
+  if ('ResizeObserver' in window) { new ResizeObserver(post).observe(document.body); }
   window.addEventListener('load', post);
   window.addEventListener('resize', post);
   post();
