@@ -1,0 +1,7 @@
+{
+  "name": "verktyg",
+  "private": true,
+  "type": "commonjs",
+  "description": "Skärmdumpar av Partner-sidan med den installerade Chrome. Kör: node skarmdump.js <url> <utmapp>",
+  "dependencies": { "puppeteer-core": "^25.10.0" }
+}
