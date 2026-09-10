@@ -1,0 +1,13 @@
+<!-- Klistras in i ett HTML-/embed-block på Beehiiv-sidan "Partner". Byt SRC till GitHub Pages-adressen. -->
+<iframe id="majposten-partner"
+        src="https://ANVANDARE.github.io/majposten-partner/?v=1"
+        title="Annonsera i Majposten"
+        style="display:block;width:100%;border:0;height:8200px;background:#FAF6EE;"
+        scrolling="no"></iframe>
+<script>
+window.addEventListener('message', function (e) {
+  if (!e.data || e.data.source !== 'majposten-partner') return;
+  var f = document.getElementById('majposten-partner');
+  if (f) f.style.height = Math.ceil(e.data.height) + 'px';
+});
+</script>
