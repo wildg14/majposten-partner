@@ -10,6 +10,9 @@
 - **Ändrat mot leveransen**, inget som påverkar utseendet: logotypen ligger lokalt i `bilder/kvarteret-logo.png`,
   de två mejlknapparna har `target="_top"`, höjdskriptet mäter `body.offsetHeight` (se nedan) och snippeten
   knuffar Beehiivs egen höjdmätning efter varje ändring.
+- **Ändrat på Daniels begäran 2026-09-11**, avviker medvetet från PNG:erna: Takeover-priset överstruket 2,25 kr,
+  mejlknapparna går till daniel@tvartom.win, och de fyra statistikraderna (Topp 5 %, 708, 2 300) har siffran
+  vertikalt centrerad mot texten (`align-items:center` i stället för `baseline`).
 - **Verifierat**: sidan på Pages-adressen renderar identiskt med `design/annonsera-desktop.png` och
   `design/annonsera-mobil.png` så när som på delpixel-drift i textrader, ett fåtal radbrytningar som
   referensrenderaren gjorde annorlunda (den bröt bland annat rubriker så att de överlappade texten under,
