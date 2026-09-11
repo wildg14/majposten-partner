@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Annonsera i Majposten</title>
+<style>
+  @page { size: 1280px 720px; margin: 0; }
+  html, body { margin: 0; background: #FAF6EE; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  body { counter-reset: bild; }
+  a { color: #3F5A3A; text-decoration: underline; }
+  .bild { counter-increment: bild; width: 1280px; height: 720px; padding: 64px 80px 60px; position: relative; overflow: hidden;
+          break-after: page; page-break-after: always; background: #FAF6EE;
+          font-family: Arial, Helvetica, sans-serif; color: #2A241E; font-size: 18px; line-height: 1.55; }
+  .bild:last-child { break-after: auto; page-break-after: auto; }
+  .bild.mork { background: #F3EDE0; }
+  .fot { position: absolute; left: 80px; right: 80px; bottom: 26px; display: flex; justify-content: space-between;
+         font-size: 12px; letter-spacing: .5px; color: #6E6152; }
+  .fot .nr::after { content: counter(bild) " / 13"; }
+  .etikett { font-size: 12px; font-weight: 700; letter-spacing: 2.5px; line-height: 1.4; color: #3F5A3A; text-transform: uppercase; }
+  .etikett.sten { color: #6E6152; letter-spacing: 1.5px; }
+  h1 { font-family: Georgia, 'Times New Roman', serif; font-weight: 700; font-size: 56px; line-height: 1.08; margin: 20px 0 0; text-wrap: pretty; }
+  h2 { font-family: Georgia, serif; font-weight: 700; font-size: 40px; line-height: 1.15; margin: 14px 0 0; text-wrap: pretty; }
+  h3 { font-family: Georgia, serif; font-weight: 700; font-size: 28px; line-height: 1.25; margin: 0; }
+  p { margin: 14px 0 0; color: #4A4038; text-wrap: pretty; }
+  .ingress { font-family: Georgia, serif; font-style: italic; font-size: 22px; line-height: 1.5; color: #4A4038; }
+  .liten { font-size: 14px; line-height: 1.5; color: #6E6152; }
+  .knapp { display: inline-block; min-width: 300px; text-align: center; background: #2E4A2C; color: #FAF6EE; font-size: 17px; line-height: 1.2;
+           font-weight: 700; padding: 17px 28px; text-decoration: none; }
+  .kolumner { display: grid; gap: 40px; }
+  .k3 { grid-template-columns: repeat(3, 1fr); }
+  .k2 { grid-template-columns: repeat(2, 1fr); }
+  .k4 { grid-template-columns: repeat(4, 1fr); }
+  .kort { border: 1px solid #E6DECF; padding: 28px 30px; }
+  .kort.gron { border-color: #3F5A3A; background: #DCE4D3; }
+  .kort .tal { font-family: Georgia, serif; font-size: 30px; line-height: 1.15; margin-top: 10px; }
+  .kort p { font-size: 17px; line-height: 1.55; }
+  .kort.gron p, .kort.gron .etikett { color: #33502F; }
+  .stat { border-top: 1px solid #E6DECF; padding-top: 22px; }
+  .stat .tal { font-family: Georgia, serif; font-size: 52px; line-height: 1; color: #2E4A2C; }
+  .stat div + div { font-size: 16px; line-height: 1.45; color: #4A4038; margin-top: 14px; }
+  .punkt { display: flex; gap: 14px; align-items: baseline; }
+  .punkt .nr { font-family: Georgia, serif; font-size: 26px; line-height: 1; color: #3F5A3A; flex: none; width: 26px; }
+  .punkt .titel { font-size: 19px; font-weight: 700; line-height: 1.3; }
+  .punkt p { font-size: 16px; line-height: 1.5; margin-top: 8px; padding-left: 40px; }
+  .fakta { background: #EBE4D6; padding: 26px 30px; }
+  .fakta .etikett { color: #6E6152; letter-spacing: 1.5px; }
+  .fakta .tal { font-family: Georgia, serif; font-size: 28px; line-height: 1.15; margin-top: 8px; }
+  .fakta .liten { color: #4A4038; margin-top: 6px; }
+  .ruta { background: #DCE4D3; border: 1px solid #E6DECF; padding: 28px 32px; }
+  .ruta .etikett { color: #33502F; letter-spacing: 1.5px; }
+  .ruta .stor { font-family: Georgia, serif; font-size: 24px; line-height: 1.4; margin-top: 10px; text-wrap: pretty; }
+  .ruta p { font-size: 17px; color: #33502F; }
+  .rad { display: flex; justify-content: space-between; gap: 24px; align-items: baseline; padding: 20px 18px; border-bottom: 1px solid #E6DECF; }
+  .rad .titel { font-size: 19px; font-weight: 700; line-height: 1.3; }
+  .rad .pris { font-family: Georgia, serif; font-size: 28px; line-height: 1; white-space: nowrap; }
+  .rad .liten { margin-top: 6px; }
+  .rad.gron { background: #DCE4D3; }
+  .rad.gron .liten { color: #33502F; }
+  .badge { display: inline-block; vertical-align: 2px; background: #2E4A2C; color: #FAF6EE; font-size: 10.5px; line-height: 1.4; font-weight: 700;
+           letter-spacing: 1.5px; padding: 4px 8px; margin-left: 8px; }
+  .storlek { display: flex; gap: 20px; align-items: flex-start; }
+  .storlek .block { flex: none; width: 110px; background: #EBE4D6; border-top: 2px solid #6E6152; padding: 10px 12px; }
+  .storlek .block.partner { background: #DCE4D3; border-top-color: #2E4A2C; display: flex; flex-direction: column; justify-content: space-between; }
+  .storlek .block .etikett { font-size: 10.5px; letter-spacing: 1.5px; }
+  .storlek .px { font-family: Georgia, serif; font-size: 22px; line-height: 1.3; }
+  .storlek .namn { font-size: 17px; font-weight: 700; line-height: 1.3; }
+  .storlek .liten { margin-top: 6px; }
+  .regel { font-size: 18px; line-height: 1.55; color: #4A4038; text-wrap: pretty; }
+  .regel strong { color: #2A241E; }
+  .bildram { border: 1px solid #DCD3C0; display: block; }
+  .cta { background: #2E4A2C; color: #FAF6EE; }
+  .cta h2 { font-size: 48px; }
+  .cta p { color: #DCE4D3; font-size: 22px; }
+  .cta .knapp { background: #FAF6EE; color: #2E4A2C; }
+  .cta .liten { color: #DCE4D3; }
+  .cta .fot { color: #DCE4D3; }
+  .mitt { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+</style>
+</head>
+<body>
+
+<!-- 1. Titel -->
+<section class="bild">
+  <div class="mitt" style="max-width:900px;">
+    <div class="etikett">Annonsera i Majposten</div>
+    <h1>Nå hushållen mellan älven och Slottsskogen. Varje torsdag.</h1>
+    <p class="ingress" style="margin-top:22px;">Majposten är ett gratis veckobrev om Majorna, skrivet av en granne. Det läses av 700+ personer i Majorna, Stigberget, Kungsladugård och Sanna. Brevet har plats för fyra partners från kvarteret.</p>
+    <div style="margin-top:36px;"><a class="knapp" href="mailto:daniel@tvartom.win?subject=Partner%20i%20Majposten">Bli partner</a></div>
+    <div class="liten" style="margin-top:14px;">1 500 kr i månaden exkl. moms · sex månader · fyra platser</div>
+  </div>
+  <div class="fot"><span>Annonsera i Majposten · majposten.se/partner</span><span class="nr"></span></div>
+</section>
+
+<!-- 2. Varför det funkar -->
+<section class="bild">
+  <div class="mitt">
+  <div class="etikett">Varför det funkar</div>
+  <div class="kolumner k3" style="margin-top:48px;">
+    <div>
+      <h3>Läsarna bor här</h3>
+      <p>Ingen spridning att betala för. Man anmäler sig till ett brev om Majorna för att man bor här. Läsaren handlar i kvarteren och säljer sin lägenhet i kvarteren.</p>
+    </div>
+    <div>
+      <h3>Brevet läses</h3>
+      <p>Man öppnar ett brev från en granne för att få veta vad som händer på gatan. Annonsen står mitt i den läsningen.</p>
+    </div>
+    <div>
+      <h3>Högst fyra partners</h3>
+      <p>Taket finns för att brevet ska förbli ett brev. Varje plats syns, läsarna fortsätter läsa, och ni delar inte uppmärksamheten med tjugo andra.</p>
+    </div>
+  </div>
+  </div>
+  <div class="fot"><span>Annonsera i Majposten · majposten.se/partner</span><span class="nr"></span></div>
+</section>
+
+<!-- 3. Jämfört med direktreklam -->
+<section class="bild">
+  <div class="mitt">
+  <div class="etikett">Jämfört med direktreklam</div>
+  <h2>Det finns inte många sätt att nå just Majorna</h2>
+  <p style="max-width:860px;">Den enda kanalen som går att rikta lika snävt är direktreklam i brevlådan. Skillnaden är vem som tar emot.</p>
+  <div class="kolumner k2" style="margin-top:36px;gap:24px;">
+    <div class="kort">
+      <div class="etikett sten">Direktreklam</div>
+      <div class="tal">2,50–5 kr per hushåll</div>
+      <p>Landar hos alla som inte satt upp "Ingen reklam, tack" på brevlådan. Ingen har bett om den, och de flesta slänger den innan de har läst.</p>
+    </div>
+    <div class="kort gron">
+      <div class="etikett">Majposten</div>
+      <div class="tal">Läsare som valt att läsa</div>
+      <p>Varje prenumerant har anmält sig och bekräftat i ett andra mejl. Ingen har hamnat här av misstag. Alla har valt att följa vad som händer i Majorna.</p>
+    </div>
+  </div>
+  </div>
+  <div class="fot"><span>Annonsera i Majposten · majposten.se/partner</span><span class="nr"></span></div>
+</section>
+
+<!-- 4. Siffror -->
+<section class="bild">
+  <div class="mitt">
+    <div class="kolumner k4" style="gap:32px;">
+      <div class="stat"><div class="tal">Topp 5 %</div><div>Öppningsgrad, jämfört med alla nyhetsbrev på Beehiiv</div></div>
+      <div class="stat"><div class="tal">Topp 5 %</div><div>Andel som klickar vidare av dem som öppnar</div></div>
+      <div class="stat"><div class="tal">708</div><div>Aktiva prenumeranter efter sju nummer</div></div>
+      <div class="stat"><div class="tal">2 300</div><div>Unika besökare på majposten.se de senaste fyra veckorna</div></div>
+    </div>
+    <p class="liten" style="margin-top:56px;max-width:900px;">Beehiiv är plattformen Majposten skickas från. Där finns tiotusentals nyhetsbrev, från enmansbrev till stora medietitlar. Topp 5 procent betyder att Majposten öppnas och klickas oftare än 19 av 20 av dem.</p>
+  </div>
+  <div class="fot"><span>Annonsera i Majposten · majposten.se/partner</span><span class="nr"></span></div>
+</section>
+
+<!-- 5. Var du syns -->
+<section class="bild mork">
+  <div style="display:grid;grid-template-columns:1fr 300px;gap:64px;align-items:center;height:100%;">
+    <div>
+      <div class="etikett">Var du syns</div>
+      <h2>Tre platser i varje brev</h2>
+      <p>Annonserna sitter på fasta platser, alltid märkta. Plats 2 är partnernas, mellan de två mest lästa sektionerna. Plats 1 och 3 säljs nummer för nummer. Så här ser ett nummer ut:</p>
+    </div>
+    <div style="zoom:0.68;">
+      <div style="max-width:420px;margin:0;border:1px solid #DCD3C0;background:#FAF6EE;">
+        <div style="padding:16px 20px;border-bottom:1px solid #E6DECF;text-align:center;">
+          <div style="font-family:Georgia,serif;font-size:22px;line-height:1.2;">Majposten</div>
+          <div style="font-size:9px;letter-spacing:2px;line-height:1.4;color:#6E6152;margin-top:4px;">VECKOBREVET FRÅN MAJORNA</div>
+          <div style="font-size:10px;line-height:1.4;color:#3F5A3A;text-decoration:underline;margin-top:8px;">Läs i webbläsaren</div>
+        </div>
+        <div style="padding:12px 20px 14px;border-bottom:3px solid #3F5A3A;background:#EBE4D6;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;line-height:1.4;color:#3F5A3A;text-align:center;">MAJPOSTENS PARTNERS</div>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:8px;">
+            <div style="height:32px;min-width:0;padding:0 10px;border:1px solid #DCD3C0;background:#FAF6EE;display:flex;align-items:center;justify-content:center;"><img src="bilder/kvarteret-logo.png" alt="Kvarteret Mäkleri" style="max-width:100%;max-height:14px;height:auto;display:block;object-fit:contain;"/></div>
+            <div style="height:32px;border:1px dashed #DCD3C0;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:1px;color:#A89F91;">LEDIG</div>
+            <div style="height:32px;border:1px dashed #DCD3C0;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:1px;color:#A89F91;">LEDIG</div>
+            <div style="height:32px;border:1px dashed #DCD3C0;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:1px;color:#A89F91;">LEDIG</div>
+          </div>
+        </div>
+        <div style="padding:14px 20px;border-bottom:1px solid #E6DECF;font-size:13px;line-height:1.4;color:#6E6152;">Intro från Daniel</div>
+        <div style="padding:14px 20px;border-bottom:1px solid #E6DECF;font-size:13px;line-height:1.4;color:#6E6152;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;"><span>Huvudartikel</span><span style="font-size:11px;color:#3F5A3A;text-decoration:underline;white-space:nowrap;">Läs hela på webben →</span></div>
+        <div style="padding:14px 20px;border-top:2px solid #6E6152;border-bottom:1px solid #E6DECF;background:#EBE4D6;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;line-height:1.4;color:#3F5A3A;">ANNONS</div><div style="font-size:14px;line-height:1.4;font-weight:700;margin-top:2px;">Plats 1 · efter huvudartikeln</div>
+        </div>
+        <div style="padding:14px 20px;border-top:3px solid #3F5A3A;border-bottom:1px solid #E6DECF;font-size:13px;line-height:1.4;color:#6E6152;">Händer i veckan</div>
+        <div style="padding:14px 20px;border-top:2px solid #6E6152;border-bottom:1px solid #E6DECF;background:#EBE4D6;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+          <div><div style="font-size:10px;font-weight:700;letter-spacing:1.5px;line-height:1.4;color:#3F5A3A;">ANNONS</div><div style="font-size:14px;line-height:1.4;font-weight:700;margin-top:2px;">Plats 2 · mellan de mest lästa</div></div>
+          <div style="background:#2E4A2C;color:#FAF6EE;font-size:9.5px;line-height:1.4;font-weight:700;letter-spacing:1.5px;padding:4px 8px;white-space:nowrap;">PARTNERPLATS</div>
+        </div>
+        <div style="padding:14px 20px;border-top:3px solid #3F5A3A;border-bottom:1px solid #E6DECF;font-size:13px;line-height:1.4;color:#6E6152;">Sett i området</div>
+        <div style="padding:14px 20px;border-top:2px solid #6E6152;border-bottom:1px solid #E6DECF;background:#EBE4D6;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;line-height:1.4;color:#3F5A3A;">ANNONS</div><div style="font-size:14px;line-height:1.4;font-weight:700;margin-top:2px;">Plats 3 · före avslutningen</div>
+        </div>
+        <div style="padding:14px 20px;border-top:3px solid #3F5A3A;border-bottom:1px solid #E6DECF;font-size:13px;line-height:1.4;color:#6E6152;">Avslutning</div>
+        <div style="padding:14px 20px 16px;background:#EBE4D6;border-top:3px solid #3F5A3A;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;line-height:1.4;color:#3F5A3A;text-align:center;">MAJPOSTENS PARTNERS</div>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:8px;">
+            <div style="height:32px;min-width:0;padding:0 10px;border:1px solid #DCD3C0;background:#FAF6EE;display:flex;align-items:center;justify-content:center;"><img src="bilder/kvarteret-logo.png" alt="Kvarteret Mäkleri" style="max-width:100%;max-height:14px;height:auto;display:block;object-fit:contain;"/></div>
+            <div style="height:32px;border:1px dashed #DCD3C0;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:1px;color:#A89F91;">LEDIG</div>
+            <div style="height:32px;border:1px dashed #DCD3C0;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:1px;color:#A89F91;">LEDIG</div>
+            <div style="height:32px;border:1px dashed #DCD3C0;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:1px;color:#A89F91;">LEDIG</div>
+          </div>
+          <div style="font-size:11px;line-height:1.4;color:#6E6152;text-align:center;margin-top:10px;">Logotyper högst upp och längst ned i varje brev</div>
+        </div>
+        <div style="padding:14px 20px;border-top:1px solid #DCD3C0;font-size:13px;line-height:1.4;color:#6E6152;">Signatur</div>
+      </div>
+    </div>
+  </div>
+  <div class="fot"><span>Annonsera i Majposten · majposten.se/partner</span><span class="nr"></span></div>
+</section>
+
+<!-- 6. Hur stor är annonsen? -->
+<section class="bild mork">
+  <div class="mitt">
+  <div class="etikett">Hur stor är annonsen?</div>
+  <p style="max-width:960px;">Vi mäter på mobilen, där de flesta läser. Höjderna gäller hela blocket med märkning och luft, på 390 px bredd. Partnerannonsen fyller en hel mobilskärm när läsaren scrollar förbi. De andra två hålls korta, så att brevet förblir ett brev.</p>
+  <div class="kolumner k3" style="margin-top:40px;gap:32px;">
+    <div class="storlek">
+      <div class="block" style="height:90px;"><div class="etikett">Annons</div></div>
+      <div><div class="namn">Plats 1</div><div class="px">max 300 px</div><div class="liten">Rubrik, ett par rader och länk. En liggande bild ryms.</div></div>
+    </div>
+    <div class="storlek">
+      <div class="block partner" style="height:210px;"><div class="etikett">Annons</div><div style="font-size:11px;font-weight:700;letter-spacing:1px;color:#2E4A2C;line-height:1.3;">EN HEL SKÄRM</div></div>
+      <div><div class="namn">Plats 2 · Partner</div><div class="px">max 700 px</div><div class="liten">Bilder, rubrik, text, knapp och logotyp.</div></div>
+    </div>
+    <div class="storlek">
+      <div class="block" style="height:75px;"><div class="etikett">Annons</div></div>
+      <div><div class="namn">Plats 3</div><div class="px">max 250 px</div><div class="liten">Ett erbjudande och en länk.</div></div>
+    </div>
+  </div>
+  <p class="liten" style="margin-top:40px;max-width:960px;">Annonserna tar tillsammans omkring en fjärdedel av brevet. Varje brev finns också som webbsida, dit mejlet länkar för hela huvudartikeln. Där är artikeln lång nog att brytas av Plats 1, så platserna ligger ett steg högre upp. Det är samma tre annonser i samma ordning.</p>
+  </div>
+  <div class="fot"><span>Annonsera i Majposten · majposten.se/partner</span><span class="nr"></span></div>
+</section>
+
+<!-- 7. Partner: det här ingår -->
+<section class="bild">
+  <div class="etikett">Partner</div>
+  <h2>1 500 kr i månaden. Det här ingår.</h2>
+  <div class="liten" style="margin-top:8px;">Alla priser på sidan är exkl. moms.</div>
+  <div class="kolumner k3" style="margin-top:36px;gap:28px 40px;">
+    <div><div class="punkt"><div class="nr">1</div><div class="titel">Logotyp i varje brev</div></div><p>Partnerbandet högst upp, direkt under mastheaden, och längst ned. I alla utgåvor, varje torsdag. Även veckorna utan annons.</p></div>
+    <div><div class="punkt"><div class="nr">2</div><div class="titel">Annonsplats 2 i vart fjärde nummer</div></div><p>Mellan de två mest lästa sektionerna, stor som en hel mobilskärm. Textannons i mejlet och bildannons på webben. Läsaren får den version som passar där numret öppnas. Vi utformar den tillsammans, och ni godkänner före utskick.</p></div>
+    <div><div class="punkt"><div class="nr">3</div><div class="titel">Logotyp på majposten.se</div></div><p>På startsidan, direkt under prenumerationsrutan, med länk till er sajt. Alla som anmäler sig eller läser tidigare nummer passerar den. Startsidan hade 2 170 visningar de senaste fyra veckorna.</p></div>
+    <div><div class="punkt"><div class="nr">4</div><div class="titel">Logotyp i välkomstmejlet</div></div><p>Varje ny prenumerant ser er minst två gånger innan första torsdagsbrevet.</p></div>
+    <div><div class="punkt"><div class="nr">5</div><div class="titel">Numren lever kvar</div></div><p>Varje brev publiceras på majposten.se, och det är dit mejlet skickar läsaren för hela huvudartikeln. Annonsen står med där också, och ligger kvar efter torsdagen. Nr 3 har visats över 700 gånger på webben.</p></div>
+    <div><div class="punkt"><div class="nr">6</div><div class="titel">Fler läsare för samma pris</div></div><p>Priset är satt efter dagens läsekrets. Växer brevet under perioden, växer er räckvidd med det.</p></div>
+  </div>
+  <div class="fot"><span>Annonsera i Majposten · majposten.se/partner</span><span class="nr"></span></div>
+</section>
+
+<!-- 8. Pris och villkor -->
+<section class="bild">
+  <div class="mitt">
+  <div class="etikett">Partner</div>
+  <div class="kolumner k4" style="margin-top:28px;gap:16px;">
+    <div class="fakta"><div class="etikett">Pris</div><div class="tal">1 500 kr/mån</div><div class="liten">exkl. moms · 9 000 kr för sex månader</div></div>
+    <div class="fakta"><div class="etikett">Platser</div><div class="tal">Fyra</div><div class="liten">inga fler partners de första sex månaderna</div></div>
+    <div class="fakta"><div class="etikett">Betalning</div><div class="tal">I förskott</div><div class="liten">en faktura för hela perioden, 30 dagar netto</div></div>
+    <div class="fakta"><div class="etikett">Material</div><div class="tal">Tisdag</div><div class="liten">brevet går torsdag</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 360px;gap:40px;margin-top:28px;align-items:end;">
+    <div class="ruta">
+      <div class="etikett">Varför priset är låst</div>
+      <div class="stor">708 läsare i dag. Merparten av partnerintäkterna går till att nå fler. Målet är 1 500–2 000 läsare inom sex månader.</div>
+      <p>Priset sätts efter dagens läsekrets och ligger fast hela perioden. Den som går in nu betalar för 708 och når betydligt fler under avtalstiden.</p>
+    </div>
+    <div class="liten" style="font-size:15px;">Partnerplatserna är reserverade för verksamheter i området brevet bevakar: Majorna, Stigberget, Kungsladugård och Sanna.</div>
+  </div>
+  </div>
+  <div class="fot"><span>Annonsera i Majposten · majposten.se/partner</span><span class="nr"></span></div>
+</section>
+
+<!-- 9. Enskilda annonser -->
+<section class="bild">
+  <div class="mitt">
+  <div class="etikett">Enskilda annonser</div>
+  <p style="max-width:960px;">Plats 1 och 3 säljs också nummer för nummer, utan bindning. Priset räknas per aktiv prenumerant den dag annonsen beställs, exkl. moms. I dag är det 708.</p>
+  <div style="margin-top:32px;border-top:1px solid #E6DECF;max-width:960px;">
+    <div class="rad"><div><div class="titel">Plats 1</div><div class="liten">efter huvudartikeln · per prenumerant, i dag 1 062 kr</div></div><div class="pris">1,50 kr</div></div>
+    <div class="rad"><div><div class="titel">Plats 3</div><div class="liten">före avslutningen · per prenumerant, i dag 531 kr*</div></div><div class="pris">0,75 kr</div></div>
+    <div class="rad gron"><div><div class="titel">Takeover <span class="badge">PARTNERPRIS</span></div><div class="liten">plats 1 och 3 i ditt partnernummer. Hela brevet för dig själv. Per prenumerant, i dag 708 kr.</div></div><div class="pris"><s style="color:#6E6152;font-size:19px;">2,25 kr</s> 1 kr</div></div>
+  </div>
+  <div class="liten" style="margin-top:16px;">* Minsta beställning är 1 000 kr.</div>
+  </div>
+  <div class="fot"><span>Annonsera i Majposten · majposten.se/partner</span><span class="nr"></span></div>
+</section>
+
+<!-- 10. Så kan det se ut, mobil -->
+<section class="bild mork">
+  <div style="display:grid;grid-template-columns:1fr 560px;gap:56px;align-items:start;">
+    <div>
+      <div class="etikett">Så kan det se ut</div>
+      <h2>En annons, anpassad efter skärmen</h2>
+      <p style="font-size:16px;">Annonsen byggs in i brevet med er typografi, era färger och er logotyp. Mejlet kan innehålla bilder, men inte alla e-postprogram visar dem. Därför är annonsen byggd så att den fungerar även utan: rubrik, text och knapp är riktig text, och där bilden inte laddas står plattan kvar på en färgad yta. På webben styr vi exakt hur annonsen ser ut, och på en stor skärm får den mer plats.</p>
+      <p style="font-size:16px;">Annonsen anpassas efter var och hur den visas. Mobilen är den primära ytan, och där får ett objekt plats. På en datorskärm är ytan bredare, så där kan en mäklare till exempel visa tre objekt till salu och dubbelt så många sålda, utan att annonsen blir längre. Mejlet länkar till webbversionen för hela huvudartikeln, så många läsare möter båda.</p>
+    </div>
+    <div class="kolumner k2" style="gap:24px;">
+      <div><div class="etikett sten" style="margin-bottom:10px;">Mobil · med bilder</div><img class="bildram" src="bilder/kvarteret-mobil-med-bilder.jpg" alt="Kvarteret Mäkleris annons på mobil, med bilder" style="width:100%;"></div>
+      <div><div class="etikett sten" style="margin-bottom:10px;">Mobil · utan bilder</div><img class="bildram" src="bilder/kvarteret-mobil-utan-bilder.jpg" alt="Kvarteret Mäkleris annons på mobil, när e-postprogrammet inte visar bilder" style="width:100%;"></div>
+    </div>
+  </div>
+  <div class="fot"><span>Annonsera i Majposten · majposten.se/partner</span><span class="nr"></span></div>
+</section>
+
+<!-- 11. Så kan det se ut, webb -->
+<section class="bild mork" style="padding-top:48px;">
+  <div style="display:grid;grid-template-columns:660px 1fr;gap:48px;align-items:end;">
+    <div>
+      <div class="etikett sten" style="margin-bottom:10px;">Webb · dator</div>
+      <img class="bildram" src="bilder/kvarteret-webb-dator.jpg" alt="Kvarteret Mäkleris annons på webben, dator" style="width:100%;">
+    </div>
+    <div class="liten" style="font-size:15px;padding-bottom:4px;">Exempel på hur en partnerannons kan se ut i Majposten, här med Kvarteret Mäkleri. Samma annons i mejlet och på webben. Utan bilder är vad mottagaren ser när e-postprogrammet blockerar dem.</div>
+  </div>
+  <div class="fot"><span>Annonsera i Majposten · majposten.se/partner</span><span class="nr"></span></div>
+</section>
+
+<!-- 12. Spelregler -->
+<section class="bild">
+  <div class="mitt">
+  <div class="etikett">Spelregler</div>
+  <h2>Det som gör brevet värt att annonsera i</h2>
+  <div class="kolumner k2" style="margin-top:44px;gap:32px 56px;">
+    <div class="regel"><strong>Annonser är alltid märkta.</strong> Läsaren ska aldrig behöva undra vad som är redaktionellt och vad som är betalt.</div>
+    <div class="regel"><strong>Annonsörer påverkar inte innehållet.</strong> Vad Majposten skriver om, och hur, är inte till salu.</div>
+    <div class="regel"><strong>Lokal koppling.</strong> Annonsen ska handla om något läsaren kan gå till, handla i eller ha nytta av här. Partnerplatserna är reserverade för verksamheter i området. De enskilda platserna är öppna för fler.</div>
+    <div class="regel"><strong>Ert formspråk, brevets ram.</strong> Annonsen behåller er typografi och era färger, men sätts i brevets mått och med brevets märkning. Då står den ut och blir ändå läst.</div>
+  </div>
+  </div>
+  <div class="fot"><span>Annonsera i Majposten · majposten.se/partner</span><span class="nr"></span></div>
+</section>
+
+<!-- 13. Kontakt -->
+<section class="bild cta">
+  <div class="mitt" style="max-width:880px;">
+    <h2 style="margin:0;">Vill ditt företag synas i Majorna?</h2>
+    <p style="margin-top:20px;">Skriv några rader om vad ni gör, så hör jag av mig med lediga platser och nästa möjliga nummer.</p>
+    <div style="margin-top:36px;"><a class="knapp" href="mailto:daniel@tvartom.win?subject=Partner%20i%20Majposten">Mejla Daniel</a></div>
+    <div style="margin-top:16px;font-size:20px;font-weight:700;">daniel@tvartom.win</div>
+    <div class="liten" style="margin-top:10px;">Eller svara på senaste brevet. Det går direkt till mig.</div>
+  </div>
+  <div class="fot"><span>Annonsera i Majposten · majposten.se/partner</span><span class="nr"></span></div>
+</section>
+
+</body>
+</html>

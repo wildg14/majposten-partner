@@ -8,6 +8,13 @@ ROT = Path(__file__).resolve().parents[1]
 INDEX = (ROT / "index.html").read_text(encoding="utf-8")
 EMBED = (ROT / "beehiiv-embed.html").read_text(encoding="utf-8")
 TESTSIDA = (ROT / "docs" / "beehiivtest.html").read_text(encoding="utf-8")
+PITCH = (ROT / "pitch.html").read_text(encoding="utf-8")
+
+
+def textsegment(html):
+    """Synlig text i ett HTML-dokument, ett segment per textnod, med hopslagna mellanslag."""
+    html = re.sub(r"<(script|style)\b.*?</\1>", " ", html, flags=re.S)
+    return [" ".join(seg.split()) for seg in re.split(r"<[^>]+>", html) if seg.strip()]
 MAILTO = "mailto:daniel@tvartom.win?subject=Partner%20i%20Majposten"
 
 
@@ -45,7 +52,14 @@ def kontroller():
     if "ANVANDARE" in EMBED:
         fel.append("beehiiv-embed.html har platshållaren ANVANDARE kvar")
 
-    # 6. Beehiiv-simuleringen testar exakt den snippet som klistras in (med </script> skrivet som <\/script>).
+    # 6. Presentationen (pitch.html) har exakt samma text som sidan: varje segment om minst åtta tecken.
+    # Skiftlägesokänsligt: sidan skriver etiketterna i versaler, presentationen via text-transform.
+    pitchtext = " ".join(textsegment(PITCH)).casefold()
+    for seg in textsegment(INDEX):
+        if len(seg) >= 8 and seg.casefold() not in pitchtext:
+            fel.append(f"text saknas i pitch.html: {seg[:70]}")
+
+    # 7. Beehiiv-simuleringen testar exakt den snippet som klistras in (med </script> skrivet som <\/script>).
     if EMBED.strip().replace("</script>", "<\\/script>") not in TESTSIDA:
         fel.append("docs/beehiivtest.html har inte samma embed-snippet som beehiiv-embed.html")
 

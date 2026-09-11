@@ -24,6 +24,9 @@
   simuleringen. Lokal server: `python3 -m http.server 8766 --bind 127.0.0.1`. `npm install` i `verktyg/` först.
 - **PDF**: `node verktyg/pdf.js` renderar sidan till `ut/Annonsera-i-Majposten.pdf` (A4, 90 %, sidbrytningar som
   håller ihop kort, rader och rubriker, mejladressen utskriven i slutsektionen). För den som inte kan öppna sidan.
+- **Presentation**: `pitch.html` är samma innehåll som 13 liggande bilder (1280×720) i samma formspråk, för att
+  skicka till en tänkbar partner. `node verktyg/pitch-pdf.js` renderar den till `ut/Majposten-Partner.pdf`.
+  `tests/kontroll.py` vaktar att varje textsegment på sidan finns i presentationen, så copyn inte glider isär.
 - **Uppdatering**: commit, push, vänta tills `gh api repos/wildg14/majposten-partner/pages/builds/latest`
   säger `built`. Webbläsare kan hålla kvar gammal version i upp till tio minuter (`cache-control: max-age=600`);
   bumpa `?v=` i iframens `src` på Beehiiv om ändringen ska synas direkt.
