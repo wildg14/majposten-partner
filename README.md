@@ -22,6 +22,8 @@
   helsidesskärmdumpar och `verktyg/jamfor.py` jämför dem mot `design/` (kräver Pillow).
   `node verktyg/beehiiv-check.js http://127.0.0.1:8766/docs/beehiivtest.html` kontrollerar höjdsynken i
   simuleringen. Lokal server: `python3 -m http.server 8766 --bind 127.0.0.1`. `npm install` i `verktyg/` först.
+- **PDF**: `node verktyg/pdf.js` renderar sidan till `ut/Annonsera-i-Majposten.pdf` (A4, 90 %, sidbrytningar som
+  håller ihop kort, rader och rubriker, mejladressen utskriven i slutsektionen). För den som inte kan öppna sidan.
 - **Uppdatering**: commit, push, vänta tills `gh api repos/wildg14/majposten-partner/pages/builds/latest`
   säger `built`. Webbläsare kan hålla kvar gammal version i upp till tio minuter (`cache-control: max-age=600`);
   bumpa `?v=` i iframens `src` på Beehiiv om ändringen ska synas direkt.
