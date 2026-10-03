@@ -13,11 +13,11 @@
 - **Ändrat på Daniels begäran 2026-09-11**, avviker medvetet från PNG:erna: Takeover-priset överstruket 2,25 kr,
   mejlknapparna går till daniel@tvartom.win, och de fyra statistikraderna (Topp 5 %, 708, 2 300) har siffran
   vertikalt centrerad mot texten (`align-items:center` i stället för `baseline`).
-- **Uppdaterat 2026-10-01** efter Beehiiv-API:t samma dag: 994 aktiva prenumeranter efter nio nummer
-  (ingressen säger "nästan 1 000"), och nya styckpriser: Plats 1 1,25 kr (i dag 1 243 kr), Plats 3 0,60 kr
-  (596 kr), Takeover 0,80 kr (795 kr) mot överstruket 1,85 kr, som är summan av Plats 1 och 3. Kronbeloppen
-  är avrundade till hela kronor. Webbsiffrorna samma dag, avrundade nedåt: 2 150 unika besökare och 2 350
-  visningar av startsidan de senaste fyra veckorna (Europe/Stockholm), Nr 3 över 1 100 visningar totalt. `?v=4`.
+- **Uppdaterat 2026-10-03** efter Beehiiv-API:t samma dag: 1 210 aktiva prenumeranter efter tio nummer
+  (ingressen säger "över 1 200"), och styckpriserna Plats 1 1 kr (i dag 1 210 kr), Plats 3 0,50 kr (605 kr),
+  Takeover 0,75 kr (908 kr) mot överstruket 1,50 kr, som är summan av Plats 1 och 3. Kronbeloppen är avrundade
+  till hela kronor. Webbsiffrorna samma dag, avrundade nedåt: 3 100 unika besökare och 2 850 visningar av
+  startsidan de senaste fyra veckorna (Europe/Stockholm), Nr 3 över 1 100 visningar totalt. `?v=5`.
 - **Verifierat**: sidan på Pages-adressen renderar identiskt med `design/annonsera-desktop.png` och
   `design/annonsera-mobil.png` så när som på delpixel-drift i textrader, ett fåtal radbrytningar som
   referensrenderaren gjorde annorlunda (den bröt bland annat rubriker så att de överlappade texten under,
