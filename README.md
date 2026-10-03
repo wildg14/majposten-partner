@@ -17,7 +17,8 @@
   (ingressen säger "över 1 200"), och styckpriserna Plats 1 1 kr (i dag 1 210 kr), Plats 3 0,50 kr (605 kr),
   Takeover 0,75 kr (908 kr) mot överstruket 1,50 kr, som är summan av Plats 1 och 3. Kronbeloppen är avrundade
   till hela kronor. Webbsiffrorna samma dag, avrundade nedåt: 3 100 unika besökare och 2 850 visningar av
-  startsidan de senaste fyra veckorna (Europe/Stockholm), Nr 3 över 1 100 visningar totalt. `?v=5`.
+  startsidan de senaste fyra veckorna (Europe/Stockholm), Nr 3 över 1 100 visningar totalt. Målet i rutan
+  "Varför priset är låst" är 3 000 läsare inom sex månader (förut 1 500–2 000). `?v=6`.
 - **Verifierat**: sidan på Pages-adressen renderar identiskt med `design/annonsera-desktop.png` och
   `design/annonsera-mobil.png` så när som på delpixel-drift i textrader, ett fåtal radbrytningar som
   referensrenderaren gjorde annorlunda (den bröt bland annat rubriker så att de överlappade texten under,
